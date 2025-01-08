@@ -2,74 +2,58 @@ import 'package:calculator/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
 
+/// A stateful widget that represents the home page of the calculator app.
 class MyHomePage extends StatefulWidget {
+  /// Creates an instance of [MyHomePage].
   const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+/// The state class for [MyHomePage].
 class _MyHomePageState extends State<MyHomePage> {
-  String userInput = ""; // Stores the current input
-  String result = "0"; // Stores the calculation result
+  /// Stores the current input from the user.
+  String userInput = "";
 
+  /// Stores the calculation result.
+  String result = "0";
+
+  /// A list of button labels for the calculator.
   final List<String> buttons = [
-    'C',
-    'Del',
-    '%',
-    '😊',
-    '7',
-    '8',
-    '9',
-    '/',
-    '4',
-    '5',
-    '6',
-    '*',
-    '1',
-    '2',
-    '3',
-    '-',
-    '0',
-    '.',
-    '=',
-    '+',
+    'C', 'Del', '%', '😊', '7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '=', '+',
   ];
 
-  // Function to handle button presses
+  /// Handles button presses and updates the state accordingly.
+  ///
+  /// [buttonText] is the label of the button that was pressed.
   void onButtonPressed(String buttonText) {
     setState(() {
       if (buttonText == "C") {
-        // Clear input and result
         userInput = "";
         result = "0";
       } else if (buttonText == "Del") {
-        // Remove the last character
         if (userInput.isNotEmpty) {
           userInput = userInput.substring(0, userInput.length - 1);
         }
       } else if (buttonText == "=") {
-        // Evaluate the expression
         result = calculateResult();
       } else {
-        // Append the button text to the input
         userInput += buttonText;
       }
     });
   }
 
-  // Function to evaluate the expression
+  /// Evaluates the mathematical expression in [userInput] and returns the result.
+  ///
+  /// Returns the result as a string. If there's an error in evaluation, returns "Error".
   String calculateResult() {
     try {
-      // Replace ^ with ** for power functionality
       String finalInput = userInput.replaceAll('^', '**');
-
-      // Now we can directly parse the modified expression
       Parser parser = Parser();
       Expression exp = parser.parse(finalInput);
       ContextModel cm = ContextModel();
       double eval = exp.evaluate(EvaluationType.REAL, cm);
-
       return eval.toString();
     } catch (e) {
       return "Error";
@@ -93,19 +77,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    userInput, // Display the current input
+                    userInput,
                     style: TextStyle(fontSize: 24, color: Colors.white),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    result, // Display the calculation result
+                    result,
                     style: TextStyle(fontSize: 48, color: Colors.white),
                   ),
                 ],
               ),
             ),
           ),
-
           // Button grid section
           Expanded(
             flex: 3,
@@ -125,11 +108,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   Color textColor = Colors.white;
 
                   if (index < 4) {
-                    // Special buttons
                     buttonColor = Colors.redAccent;
                     textColor = Colors.white;
                   } else if (index % 4 == 3) {
-                    // Operator buttons
                     buttonColor = Colors.orange;
                     textColor = Colors.white;
                   }
