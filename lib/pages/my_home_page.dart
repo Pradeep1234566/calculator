@@ -1,3 +1,4 @@
+import 'dart:math'; // Import math library
 import 'package:calculator/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
@@ -17,8 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'C',
     'Del',
     '%',
-    'log', // Replaced "OFF" with "log"
-    '(',
+    '(', // Removed '^'
     ')',
     '/',
     '*',
@@ -63,9 +63,10 @@ class _MyHomePageState extends State<MyHomePage> {
   // Function to evaluate the expression
   String calculateResult() {
     try {
-      // Replace custom operators with standard math expressions
-      String finalInput = userInput.replaceAll('x', '*');
+      // Replace ^ with ** for power functionality
+      String finalInput = userInput.replaceAll('^', '**');
 
+      // Now we can directly parse the modified expression
       Parser parser = Parser();
       Expression exp = parser.parse(finalInput);
       ContextModel cm = ContextModel();
@@ -75,6 +76,25 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       return "Error";
     }
+  }
+
+  // Function to handle power (^) manually using Dart's pow
+  String processPower(String input) {
+    while (input.contains('**')) {
+      final RegExp powerRegex = RegExp(r'(\d+(\.\d+)?)[\^](\d+(\.\d+)?)');
+      final match = powerRegex.firstMatch(input);
+
+      if (match != null) {
+        final base = double.parse(match.group(1)!);
+        final exponent = double.parse(match.group(3)!);
+        final result = pow(base, exponent); // Use Dart's pow function
+
+        input = input.replaceFirst(match.group(0)!, result.toString());
+      } else {
+        break;
+      }
+    }
+    return input;
   }
 
   @override
