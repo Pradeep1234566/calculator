@@ -1,6 +1,6 @@
 import 'package:calculator/components/button.dart';
 import 'package:flutter/material.dart';
-import 'package:math_expressions/math_expressions.dart'; // Add this dependency for expression evaluation
+import 'package:math_expressions/math_expressions.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -17,23 +17,25 @@ class _MyHomePageState extends State<MyHomePage> {
     'C',
     'Del',
     '%',
-    'log', // Replace "OFF" with "log"
+    'log', // Replaced "OFF" with "log"
+    '(',
+    ')',
+    '/',
+    '*',
     '7',
     '8',
     '9',
-    '/',
+    '-',
     '4',
     '5',
     '6',
-    '*',
+    '+',
     '1',
     '2',
     '3',
-    '-',
+    '=',
     '0',
     '.',
-    '=',
-    '+',
   ];
 
   // Function to handle button presses
@@ -51,9 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
       } else if (buttonText == "=") {
         // Evaluate the expression
         result = calculateResult();
-      } else if (buttonText == "log") {
-        // Add log functionality
-        userInput += "log("; // Append 'log(' to the input
       } else {
         // Append the button text to the input
         userInput += buttonText;
@@ -131,8 +130,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     // First row (special buttons)
                     buttonColor = Colors.redAccent;
                     textColor = Colors.white;
-                  } else if (index % 4 == 3) {
-                    // Right-most column (operators)
+                  } else if (index % 4 == 3 ||
+                      buttons[index] == "(" ||
+                      buttons[index] == ")") {
+                    // Right-most column (operators) and brackets
                     buttonColor = Colors.orange;
                     textColor = Colors.white;
                   }
