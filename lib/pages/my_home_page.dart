@@ -1,4 +1,3 @@
-import 'dart:math'; // Import math library
 import 'package:calculator/components/button.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
@@ -19,24 +18,22 @@ class _MyHomePageState extends State<MyHomePage> {
     'Del',
     '%',
     '😊',
-    '(', // Removed '^'
-    ')',
-    '/',
-    '*',
     '7',
     '8',
     '9',
-    '-',
+    '/',
     '4',
     '5',
     '6',
-    '+',
+    '*',
     '1',
     '2',
     '3',
-    '=',
+    '-',
     '0',
     '.',
+    '=',
+    '+',
   ];
 
   // Function to handle button presses
@@ -77,25 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
     } catch (e) {
       return "Error";
     }
-  }
-
-  // Function to handle power (^) manually using Dart's pow
-  String processPower(String input) {
-    while (input.contains('**')) {
-      final RegExp powerRegex = RegExp(r'(\d+(\.\d+)?)[\^](\d+(\.\d+)?)');
-      final match = powerRegex.firstMatch(input);
-
-      if (match != null) {
-        final base = double.parse(match.group(1)!);
-        final exponent = double.parse(match.group(3)!);
-        final result = pow(base, exponent); // Use Dart's pow function
-
-        input = input.replaceFirst(match.group(0)!, result.toString());
-      } else {
-        break;
-      }
-    }
-    return input;
   }
 
   @override
@@ -143,18 +121,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 itemCount: buttons.length,
                 itemBuilder: (BuildContext context, int index) {
-                  // Assign different colors based on the button type
                   Color buttonColor = Colors.grey[800]!;
                   Color textColor = Colors.white;
 
                   if (index < 4) {
-                    // First row (special buttons)
+                    // Special buttons
                     buttonColor = Colors.redAccent;
                     textColor = Colors.white;
-                  } else if (index % 4 == 3 ||
-                      buttons[index] == "(" ||
-                      buttons[index] == ")") {
-                    // Right-most column (operators) and brackets
+                  } else if (index % 4 == 3) {
+                    // Operator buttons
                     buttonColor = Colors.orange;
                     textColor = Colors.white;
                   }
