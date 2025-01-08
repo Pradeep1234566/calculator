@@ -18,6 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
     'C',
     'Del',
     '%',
+    '😊',
     '(', // Removed '^'
     ')',
     '/',
